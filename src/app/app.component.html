@@ -1,310 +1,130 @@
-<nav class="navbar navbar-dark bg-dark justify-content-between">
-  <a class="navbar-brand site-main-color">Site Logo</a>
-  <div class="dropdown show">
-    <a class="btn btn-secondary dropdown-toggle site-main-color"
-     href="#"
-     role="button"
-     id="dropdownMenuLink"
-     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="cart();">
-      Shopping cart <i class="fas fa-shopping-cart"></i> {{cartAmount}}
-    </a>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-      <a class="dropdown-item" style="pointer-events: none;"  *ngFor="let cartItm of cartArr">
-        <span>{{cartItm.prodName}}</span> <br>
-        <span>Qty. {{cartItm.qty}}</span> <br>
-        <span>Price {{cartItm.prodPrice}}$</span>
-        <hr>
-      </a>
-      <span class="dropdown-item">Total price: {{totalPrice}}$</span>
-    </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#">Womens </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Mens </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Children </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Footwear</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Accessories <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Outlet</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Designer</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Comunity</a>
+      </li>
+    </ul>
   </div>
 </nav>
-<div class="container">
-    <table class="table table-bordered table-striped">
-        <thead>
-          <button class="add-item-button" (click)="expandImage();"><i class="fas fa-plus"></i> Add new item</button>
-          <button class="edit-remove-item-button" (click)="removeProductFunc();"> Edit,Remove item</button>
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown_categories" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-                Categories
-            </button>
-            <div id="menu" class="dropdown-menu" aria-labelledby="dropdown_categories">
-                <div id="menuItems">
-                  <ul style="list-style: none;">
-                    <a class="site-main-color" href="" *ngFor ="let cat of categories" class="list-items-style">
-                      <li>{{cat.name}}
-                    </li>
-                    </a>
-                  </ul>
-                </div>
-                <button class="remove-category-button" (click)="showDeleteCategory();"> Update\Remove category</button>
-                <button class="add-category-button" (click)="showCategoryModal();"><i class="fas fa-plus"></i> Add new category</button>
-                <div *ngIf="!categories" id="empty" class="dropdown-header">No categories found</div>
-            </div>
-        </div>
-        </thead>
-        <tbody>
-          <tr *ngFor="let emp of products  | paginate: { id: 'listing_pagination',
-                                                          itemsPerPage: 20,
-                                                          currentPage: page,
-                                                          totalItems: totalRec }; let i = index">
-                                                          
-            <div class="bio-info" id="card{{i}}" [ngStyle]="{'background-color': emp.background }">
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="bio-image">
-                        <img id="products{{i}}" src="{{emp.image}}"  alt="image" />
-                       </div>			
-                    </div>
-                   </div>	
-                </div>
-              <div class="col-md-6">
-               <div class="bio-content">
-                 <h3>{{emp.name}}&nbsp;{{emp.description}}</h3>
-                  <h4>Category : <span >{{emp.categoryName}}</span> </h4>
-                  <h6>Price : {{emp.price}}$</h6>
-                  <h6>Quantity : {{emp.quantity}}</h6>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="container edit-items hide-edit-products">
-                  <span class="style-edit-product" (click)="editProduct(emp.id);">Edit <i class="fas fa-pencil-alt"></i></span>
-                  <span class="style-delete-product" (click)="removeProduct(emp.id)">Remove <i class="fas fa-times"></i></span>
-                </div>
-                  <div class="dropdown">
-                    <button class="btn btn-secondary btn-sm dropdown-position"
-                      type="button" 
-                      id="dropdownMenuButton"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                      (click)="addToCart(emp.id);">
-                      Add to cart <i class="fas fa-shopping-cart"></i>
-                    </button>
-                    <div class="col-lg-8 qty-position">
-                        <div class="input-group">
-                          <span class="input-group-btn">
-                            <button type="button"
-                             class="quantity-right-plus btn btn-number site-main-color"
-                             data-type="plus"
-                             data-field=""
-                             (click)="changeQty(emp.id, false, emp.quantity)">
-                              <i class="fas fa-minus"></i>
-                          </button>
-                        </span>
-                          <input type="text"
-                          id="cart-quantity{{emp.id}}"
-                          name="quantity"
-                          class="form-control input-number"
-                          value="0" min="1" max="{{emp.quantity}}">
-                        <span class="input-group-btn">
-                            <button type="button" 
-                            class="quantity-left-minus btn btn-number site-main-color"
-                            data-type="minus"
-                            data-field=""
-                            (click)="changeQty(emp.id, true, emp.quantity)">
-                              <i class="fas fa-plus"></i> 
-                            </button>
-                          </span>
-                        </div>
-                  </div>
-                </div>
-              </div>
-              </div>	
-            </div>
-        </tr>
-        </tbody>
-      </table>
-      <div>
-        <pagination-controls  id="listing_pagination" maxSize="5" directionLinks="true" (pageChange)="page = $event" ></pagination-controls>
+<div class="container container-style">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="select-container">
+        <label class="label-styles" for="firstSelect">Chose Option</label>
+        <select class="form-control" id="firstSelect">
+          <option>First Option</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
       </div>
-</div>
-<div id="myModal" class="modal">
-  <span class="close" id="closeModal" (click)="closeModal();">&times;</span>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <legend>Add new product</legend>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <div class="labels-container">
+        <label class="label-first" for="firstSelect">Lable</label>
+        <label class="label-second" for="firstSelect">Another label</label>
       </div>
-      <!-- Modal body -->
-      <div class="modal-body">
-        <form #newProductForm = "ngForm" (ngSubmit) = "createProduct(newProductForm)">
-          <fieldset>
-            <div class="form-group">
-              <label class="col-md-6 control-label style-modal-imputs" for="product_name">Product Name</label>  
-              <div class="col-md-6 style-modal-imputs">
-              <input id="product_name"
-                name="product_name"
-                placeholder="PRODUCT NAME"
-                class="form-control input-md" required=""
-                type="text" max-lenght="200" ngModel>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-md-6 control-label style-modal-imputs" for="product_description">Product Description</label>  
-              <div class="col-md-6 style-modal-imputs">
-              <input id="product_description"
-                name="product_description"
-                placeholder="PRODUCT DESCRIPTION"
-                class="form-control input-md" required=""
-                type="text" max-lenght="200" ngModel>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-md-6 control-label style-modal-imputs" for="product_category">Product Category</label>  
-              <div class="col-md-6 style-modal-imputs">
-                <select class="form-control" id="product_category" name="product_category" size="3" ngModel>
-                  <option *ngFor="let cat of categories" value="{{cat.id}}" >{{cat.name}}</option>
-                </select> 
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-md-6 control-label style-modal-imputs" for="product_price">Product Price</label>  
-              <div class="col-md-6 style-modal-imputs">
-              <input id="product_price"
-               name="product_price"
-                placeholder="PRODUCT PRICE"
-                class="form-control input-md" 
-                required="" min="0" value="0" step=".01" type="number" ngModel>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-md-6 control-label style-modal-imputs" for="available_quantity">Available Quantity</label>  
-              <div class="col-md-6 style-modal-imputs">
-              <input id="available_quantity"
-               name="available_quantity"
-                placeholder="AVAILABLE QUANTITY"
-                 class="form-control input-md" required="" type="text" ngModel>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-md-6 control-label style-modal-imputs" for="filebutton">Image</label>
-              <div class="col-md-6 style-modal-imputs">
-                <input id="filebutton" name="filebutton" class="input-file" type="file">
-              </div>
-            </div>
-          </fieldset>
-          <button id="singlebutton" name="singlebutton" class="btn btn-success" type="submit">Save</button>
-          <button type="button" class="btn btn-danger" (click)="closeModal();" data-dismiss="modal">Close</button>
-        </form>
+      <div class="image-container">
+        <img src="assets/images/Untitled-1.png" class="img-fluid" alt="Responsive image">
       </div>
-    </div>
-  </div>
-</div>
-<!-- Categoies modal -->
-<div id="categoriesModal" class="modal">
-  <span class="close" id="closeModal" (click)="closeCategoryModal();">&times;</span>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <legend>Add new category</legend>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <!-- Modal body -->
-      <div class="modal-body">
-        <form #categoriesForm = "ngForm" (ngSubmit) = "createCategory(categoriesForm)">
-          <fieldset>
-            <div class="form-group">
-              <label class="col-md-4 control-label style-modal-imputs" for="category_name">Category Name</label>  
-            <div class="col-md-8 style-modal-imputs">
-              <input id="category_name"
-                name="category_name"
-                placeholder="Category Name"
-                class="form-control input-md" required=""
-                type="text" max-lenght="200" ngModel>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-md-4 control-label style-modal-imputs" for="categorie_description">Category Description</label>
-              <div class="col-md-8 style-modal-imputs">
-                <input id="categorie_description"
-                name="categorie_description"
-                class="form-control"
-                placeholder="Category Description"
-                type="text" maxlength="200" ngModel>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-md-6 control-label style-modal-imputs" for="category_available">Category Available</label>  
-              <div class="col-md-6 style-modal-imputs">
-              <input id="category_available" name="category_available" class="form-control input-md" required="" type="checkbox" ngModel>
-              </div>
-            </div>
-          </fieldset>
-          <button type="button" class="btn btn-success" type="submit">Save</button>
-        <button type="button" class="btn btn-danger" (click)="closeCategoryModal();" data-dismiss="modal">Close</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Remove Categoies modal -->
-<div id="removeCategoriesModal" class="modal">
-  <span class="close" id="closeModal" (click)="closeRemoveCategoryModal();">&times;</span>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <legend>Remove Category</legend>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <!-- Modal body -->
-      <div class="modal-body">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Category Name</th>
-              <th scope="col">Edit</th>
-              <th scope="col">Delete</th>
-            </tr>
-          </thead>
+      <div class="movies-list">
+        <table class="table table-hover">
           <tbody>
-            <tr *ngFor="let cat of categories" title="{{cat.description}}">
-              <td>{{cat.name}} 
-                <form id="editCategoriesForm{{cat.id}}" #editCategoriesForm = "ngForm" (ngSubmit) = "updateCategory(editCategoriesForm,cat.id)" style="display:none;">
-                  <fieldset>
-                    <div class="form-group">
-                      <label class="col-md-4 control-label style-modal-imputs" for="update_category_name">Category Name</label>  
-                    <div class="col-md-8 style-modal-imputs">
-                      <input id="update_category_name{{cat.id}}"
-                        name="update_category_name"
-                        placeholder="Category Name"
-                        class="form-control input-md" required=""
-                        type="text" max-lenght="200" ngModel="{{cat.name}}">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-md-4 control-label style-modal-imputs" for="update_categorie_description">Category Description</label>
-                      <div class="col-md-8 style-modal-imputs">
-                        <input id="update_categorie_description{{cat.id}}"
-                        name="update_categorie_description"
-                        class="form-control"
-                        placeholder="Category Description"
-                        type="text" maxlength="200" ngModel="{{cat.description}}">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-md-6 control-label style-modal-imputs" for="update_category_available">Category Available</label>  
-                      <div class="col-md-6 style-modal-imputs">
-                      <input id="update_category_available{{cat.id}}" name="update_category_available" class="form-control input-md" required="" type="checkbox" ngModel="{{cat.available}}">
-                      </div>
-                    </div>
-                  </fieldset>
-                  <button type="button" class="btn btn-success" type="submit">Save</button>
-                <button type="button" class="btn btn-danger" (click)="closeCategoryForm(cat.id);" data-dismiss="modal">Close</button>
-                </form>
-              </td>
-              <td><i class="fas fa-pencil-alt" style="color: #ff9900;" (click)="editCategory(cat.id);"></i></td>
-              <td><i class="fas fa-times remove-category-sign" title="This action will penamently delete category!" (click)="removeCategory(cat.id);"></i></td>
+            <tr *ngFor="let mov of moviesArray" [ngClass]="{'active-movie': mov.id == 1}">
+              <td>{{mov.title}}</td>
+              <th style="float: right;">{{mov.releaseYear}}</th>
             </tr>
           </tbody>
         </table>
-        <button type="button" class="btn btn-danger" style="float: right;" (click)="closeRemoveCategoryModal();" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="select-container">
+        <label class="label-styles" for="secondSelect">Chose Another Option</label>
+        <select class="form-control" id="secondSelect">
+          <option>Some Other Option</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <table class="table table-calc">
+          <thead class="thead-custom">
+            <tr>
+              <th>A</th>
+              <th>B</th>
+              <th>C</th>
+            </tr>
+          </thead>
+          <tbody class="tbody-custom">
+            <tr>
+              <td><input type="number" step="0.1" class="form-control input-dimensions" [(ngModel)]="aCellValue" (keyup)="calcCbox();"></td>
+              <td><input type="number" step="0.1" class="form-control input-dimensions"[(ngModel)]="bCellValue" (keyup)="calcCbox();"></td>
+              <td><span class="results" *ngIf="cResult">C = {{cResult}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-calc-secondary">
+          <thead class="thead-custom">
+            <tr>
+              <th>D</th>
+              <th>E</th>
+              <th>F</th>
+            </tr>
+          </thead>
+          <tbody class="tbody-custom">
+            <tr>
+              <td><input type="number" step="0.1" class="form-control input-dimensions" [(ngModel)]="dCellValue" (keyup)="calcFbox();"></td>
+              <td><input type="number" step="0.1" class="form-control input-dimensions" [(ngModel)]="eCellValue" (keyup)="calcFbox();"></td>
+              <td><span *ngIf="fResult">F = {{fResult}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-calc-secondary">
+          <thead class="thead-custom">
+            <tr>
+              <th>G</th>
+              <th>H</th>
+              <th>I</th>
+            </tr>
+          </thead>
+          <tbody class="tbody-custom">
+            <tr>
+              <td><span *ngIf="adbeMax">G = {{adbeMax}}</span></td>
+              <td><span *ngIf="adbeMin">H = {{adbeMin}}</span></td>
+              <td><span *ngIf="cfghAvg">I = {{cfghAvg}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="image-container">
+          <img src="assets/images/Secondary-Image.png" class="img-fluid" alt="Responsive image">
+        </div>
       </div>
     </div>
   </div>
